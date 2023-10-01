@@ -1,16 +1,31 @@
-import Link from 'next/link';
-import bagsPictures from '../../const/products';
+import { createClient } from '@supabase/supabase-js';
+import Gallery from '@/components/Gallery';
 
-function Products({ bagsPictures }) {
-  console.log(bagsPictures); // Log the value of bagsPictures
+type Image = {
+  id: number;
+  imageSrc: string;
+};
 
+export async function generateStaticParams() {
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+    process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+  );
+
+  const { data } = await supabaseAdmin.from('images').select('*').order('id');
+  console.log(data);
+
+  return {
+    props: {
+      images: data,
+    },
+  };
+}
+
+export default function ProductsPage({ images }: { images: Image[] }) {
   return (
     <div>
-      {bagsPictures.map((bagPicture) => (
-        <div key={bagPicture.id}>hi</div>
-      ))}
+      <Gallery images={images} />
     </div>
   );
 }
-
-export default Products;

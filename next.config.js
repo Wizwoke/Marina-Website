@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    domains: [''],
+  },
+  debug: {
+    webpack: true,
+    nextjs: true,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
